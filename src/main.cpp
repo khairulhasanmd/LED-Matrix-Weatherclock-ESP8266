@@ -52,7 +52,7 @@ String weatherString;
 // =======================================================================
 const char* ssid     = "AXIOM-Office";     // SSID of local network
 const char* password = "bismillah";   // Password on network
-String weatherKey = "befe4ec6e8c75406716a7c7eb4f4437b"; // city id from openweather 
+String weatherKey = ""; // city id from openweather 
 String weatherLang = "&lang=en";
 String cityID = "1337233"; // Cityid from open weather
 // read OpenWeather api description for more info
