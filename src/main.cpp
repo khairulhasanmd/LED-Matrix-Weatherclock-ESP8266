@@ -1,5 +1,3 @@
-#include <Arduino.h>
-
 /*
  * Assuming esp boards already installed. 
  * Must use this library :- 
@@ -7,12 +5,15 @@
  * ArduinoJson at version 5.13.2
   Download these library from library manager.
 */
-
-
-// #include "Arduino.h"
+#include <Arduino.h>
 #include <ESP8266WiFi.h>
 #include <ArduinoJson.h>
 #include <TimeLib.h>
+
+#include <WiFiManager.h>
+WiFiManager wifiManager;
+
+#include <ESPAsyncTCP.h>
 
 WiFiClient client;
 
@@ -281,13 +282,13 @@ long localMillisAtUpdate = 0;
 void getTime()
 {
   WiFiClient client;
-  if (!client.connect("www.google.co.in", 80)) {
+  if (!client.connect("www.google.com", 80)) {
     Serial.println("connection to google failed");
     return;
   }
 
   client.print(String("GET / HTTP/1.1\r\n") +
-               String("Host: www.google.co.in\r\n") +
+               String("Host: www.google.com\r\n") +
                String("Connection: close\r\n\r\n"));
   int repeatCounter = 0;
   while (!client.available() && repeatCounter < 10) {
@@ -329,18 +330,15 @@ void updateTime()
 void setup() 
 {
   Serial.begin(115200);
+  printStringWithShift("Connecting WiFi   ",40);
+  wifiManager.autoConnect("64x8 LED Matrix Display");
+
   initMAX7219();
   sendCmdAll(CMD_SHUTDOWN,1);
   sendCmdAll(CMD_INTENSITY,1);
-  Serial.print("Connecting WiFi ");
-  WiFi.begin(ssid, password);
-  while (WiFi.status() != WL_CONNECTED) {
-    printStringWithShift("Connecting WiFi   ",40);
-    delay(500);
-    Serial.print(".");
-  }
   Serial.println("");
-  Serial.print("Connected: "); Serial.println(WiFi.localIP());
+  Serial.print("Connected: "); 
+  Serial.println(WiFi.localIP());
 }
 
 
@@ -407,7 +405,7 @@ void showAnimClock()
 void loop()
 {
   if(updCnt<=0) { // every 10 scrolls, ~450s=7.5m
-    updCnt = 10;
+    updCnt = 40;
     Serial.println("Getting data ...");
     printStringWithShift("   Getting Data Wait   ",40);
     getWeatherData();
