@@ -5,15 +5,13 @@
  * ArduinoJson at version 5.13.2
   Download these library from library manager.
 */
-#include "max7219.h"
-#include "fonts.h"
+
 #include <Arduino.h>
 #include <ESP8266WiFi.h>
 #include <ArduinoJson.h>
 #include <TimeLib.h>
 #include <WiFiManager.h>
 #include <ESPAsyncTCP.h>
-
 // for ESP-01 module
 //#define DIN_PIN 2 // D4
 //#define CS_PIN  3 // D9/RX
@@ -23,6 +21,10 @@
 #define CS_PIN D4
 #define CLK_PIN D5
 #define NUM_MAX 4
+#define MAX_DIGITS 16
+//these should be here
+#include "max7219.h"
+#include "fonts.h"
 
 WiFiManager wifiManager;
 WiFiClient client;
@@ -52,7 +54,7 @@ String cityID = "1337233"; // Cityid from open weather
 // =======================================================================
 
 // =======================================================================
-#define MAX_DIGITS 16
+
 byte dig[MAX_DIGITS] = {
   0
 };
@@ -483,4 +485,5 @@ void loop() {
   }
   updateTime();
   showSimpleClock();
+  // showAnimClock();
 }
